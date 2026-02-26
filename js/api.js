@@ -3,7 +3,7 @@
  * All fetch calls to the Django REST Framework backend go through here.
  */
 
-const API_BASE_URL = 'http://127.0.0.1:8000/api';
+const API_BASE_URL = 'https://portfolio-backend-1-iky5.onrender.com/';
 
 async function getPortfolioData() {
     const response = await fetch(`${API_BASE_URL}/portfolio/`);
