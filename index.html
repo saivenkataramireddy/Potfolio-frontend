@@ -7,10 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description"
         content="Sai Venkata Rami Reddy Kesari is a Full Stack Python Developer skilled in Django, React, SQL, and Machine Learning.">
+
     <title>Sai Venkata Rami Reddy Kesari | Software Developer</title>
-    <link rel="icon" type="image/png" href="./assets/img/logo.png">
-    <link rel="stylesheet" href="./css/styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;500;700&display=swap"
+    <link rel="icon" type="image/png" href="./static/img/logo.png">
+    <link rel="stylesheet" href="./static/css/index.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;500;700&display=swap"
         rel="stylesheet">
 </head>
 
@@ -19,7 +21,7 @@
     <!-- ================= INTRO LOADER ================= -->
     <div id="intro">
         <h1 id="typing-name"></h1>
-        <img id="intro-logo" src="./assets/img/logo.png" alt="Logo" style="border-radius:50%;">
+        <img id="intro-logo" src="./static/img/logo.png" alt="Logo" style="border-radius:50%;">
     </div>
 
     <!-- ================= NAVBAR ================= -->
@@ -33,7 +35,7 @@
             <li><a href="#journey">Journey</a></li>
             <li><a href="#certifications">Certifications</a></li>
             <li><a href="#contact">Contact</a></li>
-            <li><a href="http://127.0.0.1:8000/admin/" target="_blank">Admin Login</a></li>
+            <li><a href="https://saivenkataramireddykesari.netlify.app/admin" target="_blank">Admin Login</a></li>
         </ul>
     </nav>
 
@@ -46,6 +48,7 @@
     <div class="fullwidth-heading reveal">
         <h1 id="projects">Projects</h1>
     </div>
+
     <section class="projects" id="projects-container">
         <p class="reveal">Loading Projects...</p>
     </section>
@@ -54,14 +57,17 @@
     <div class="fullwidth-heading reveal">
         <h1 id="skills">Skills</h1>
     </div>
+
     <section>
-        <div class="skills-container" id="skills-container"></div>
+        <div class="skills-container" id="skills-container">
+        </div>
     </section>
 
     <!-- ================= JOURNEY ================= -->
     <div class="fullwidth-heading reveal">
         <h1 id="journey">My Journey</h1>
     </div>
+
     <section class="timeline" id="journey-container">
         <p class="reveal">Loading Journey...</p>
     </section>
@@ -70,6 +76,7 @@
     <div class="fullwidth-heading reveal">
         <h1 id="certifications">Certifications</h1>
     </div>
+
     <section class="certifications" id="certifications-container">
         <p class="reveal">Loading Certifications...</p>
     </section>
@@ -78,26 +85,32 @@
     <div class="fullwidth-heading reveal">
         <h1 id="contact">Contact</h1>
     </div>
+
     <div class="contact-container reveal">
         <h2>Get in Touch</h2>
         <p>Feel free to reach out for any collaboration or queries.</p>
+
         <form id="contact-form">
             <div class="form-group">
                 <label>Name:</label>
                 <input type="text" name="name" required>
             </div>
+
             <div class="form-group">
                 <label>Email:</label>
                 <input type="email" name="email" required>
             </div>
+
             <div class="form-group">
                 <label>Contact Number:</label>
                 <input type="tel" name="contact_number">
             </div>
+
             <div class="form-group">
                 <label>Message:</label>
                 <textarea name="message" rows="4" required></textarea>
             </div>
+
             <button type="submit" id="button">Send Message</button>
         </form>
         <p id="contact-response" style="margin-top: 10px;"></p>
@@ -107,10 +120,11 @@
     <footer class="footer reveal">
         <div class="footer-container">
             <div class="footer-left reveal-left">
-                <img src="./assets/img/logo.png" alt="Logo" class="footer-logo">
+                <img src="./static/img/logo.png" alt="Logo" class="footer-logo">
                 <h2>K.S.V. Rami Reddy</h2>
                 <p>Passionate Developer | Problem Solver | Tech Explorer</p>
             </div>
+
             <div class="footer-middle reveal">
                 <h3>Quick Links</h3>
                 <ul>
@@ -122,6 +136,7 @@
                     <li><a href="#contact">Contact</a></li>
                 </ul>
             </div>
+
             <div class="footer-right reveal-right">
                 <h3>Follow Me</h3>
                 <div class="social-icons">
@@ -137,10 +152,179 @@
         </div>
     </footer>
 
-    <!-- Scripts loaded at end for performance -->
-    <script src="./js/api.js"></script>
-    <script src="./js/main.js"></script>
+    <script>
+        document.getElementById('current-year').innerText = new Date().getFullYear();
 
+        const API_BASE_URL = 'http://127.0.0.1:8000/api';
+
+        /* FETCH DATA FROM DRF BACKEND */
+        async function loadPortfolioData() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/portfolio/`);
+                const data = await response.json();
+
+                // Load Blogs (Home)
+                const homeContainer = document.getElementById('home-container');
+                if (data.blogs.length > 0) {
+                    const blog = data.blogs[0];
+                    homeContainer.innerHTML = `
+                <div class="home-wrapper reveal show">
+                    <div class="home-text reveal-left show">
+                        <h1>Hello, It's Me</h1>
+                        <p id="name">${blog.name}</p>
+                        <p id="iam">And I am a <span>${blog.iam}</span></p>
+                        <p id="about_you">${blog.about_you}</p>
+                        <button>
+                            ${blog.resume ? `<a href="${blog.resume}" target="_blank">Resume</a>` : ''}
+                        </button>
+                    </div>
+                    <div class="home-image reveal-right show">
+                        ${blog.self_introduction ? `<a href="${blog.self_introduction}" target="_blank">
+                            <img src="${blog.self_introduction}" alt="Profile Image">
+                        </a>` : ''}
+                    </div>
+                </div>
+            `;
+                }
+
+                // Load Projects
+                const projectsContainer = document.getElementById('projects-container');
+                if (data.projects.length > 0) {
+                    projectsContainer.innerHTML = data.projects.map(project => `
+                <div class="proj card reveal reveal-zoom show">
+                    <img src="${project.image}" alt="Project Image">
+                    <h2>${project.title}</h2>
+                    <h3>Technologies Used : ${project.technologies}</h3>
+                    <a class="project-btn" href="project_detail.html?id=${project.id}">🔗 View Project</a>
+                </div>
+            `).join('');
+                } else {
+                    projectsContainer.innerHTML = `<p class="reveal show">No Projects Available. Add Your Own Data</p>`;
+                }
+
+                // Load Skills
+                const skillsContainer = document.getElementById('skills-container');
+                if (data.skills.length > 0) {
+                    skillsContainer.innerHTML = data.skills.map(skill => `
+                <div class="skill-card reveal show">
+                    <img src="${skill.icon}" alt="${skill.name}">
+                    <h3>${skill.name}</h3>
+                    <p>${skill.level || ''}</p>
+                </div>
+            `).join('');
+                }
+
+                // Load Journey
+                const journeyContainer = document.getElementById('journey-container');
+                if (data.journeys.length > 0) {
+                    journeyContainer.innerHTML = data.journeys.map(step => `
+                <div class="timeline-item reveal show">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h2>${step.year}</h2>
+                        <h3>${step.title}</h3>
+                        <p>${step.description}</p>
+                    </div>
+                </div>
+            `).join('');
+                } else {
+                    journeyContainer.innerHTML = `<p class="reveal show">No Journey Added. Add Your Story in Admin Panel.</p>`;
+                }
+
+                // Load Certifications
+                const certContainer = document.getElementById('certifications-container');
+                if (data.certifications.length > 0) {
+                    certContainer.innerHTML = data.certifications.map(cert => `
+                <div class="cert card reveal reveal-zoom show">
+                    <img src="${cert.image}" alt="Certification">
+                    <p>${cert.description}</p>
+                </div>
+            `).join('');
+                } else {
+                    certContainer.innerHTML = `<p class="reveal show">No Certifications Available. Add From Admin.</p>`;
+                }
+
+            } catch (error) {
+                console.error("Error loading portfolio data:", error);
+            }
+        }
+
+        // Handle Contact Form Submission
+        document.getElementById('contact-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const formProps = Object.fromEntries(formData);
+
+            try {
+                const res = await fetch(`${API_BASE_URL}/contact/`, {
+                    method: 'POST',
+                    body: JSON.stringify(formProps),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const data = await res.json();
+                const responseEl = document.getElementById('contact-response');
+                if (res.ok) {
+                    responseEl.style.color = "lightgreen";
+                    responseEl.innerText = "Your message has been sent successfully!";
+                    this.reset();
+                } else {
+                    responseEl.style.color = "red";
+                    responseEl.innerText = "Error: " + (data.error || "Something went wrong.");
+                }
+            } catch (error) {
+                document.getElementById('contact-response').innerText = "Network Error.";
+            }
+        });
+
+        loadPortfolioData();
+
+
+        /* NAV */
+        function toggleMenu() {
+            document.querySelector(".nav-links").classList.toggle("active");
+        }
+
+        /* INTRO ANIMATION */
+        const text = "K. S. V. RAMI REDDY";
+        const typingElement = document.getElementById("typing-name");
+        const logo = document.getElementById("intro-logo");
+        let index = 0;
+
+        function typeEffect() {
+            if (index < text.length) {
+                typingElement.innerHTML += text.charAt(index);
+                index++;
+                setTimeout(typeEffect, 120);
+            } else {
+                logo.style.opacity = "1";
+                logo.style.transform = "scale(1)";
+                setTimeout(() => {
+                    document.body.classList.add("show-site");
+                }, 1200);
+            }
+        }
+
+        window.addEventListener("load", () => {
+            setTimeout(typeEffect, 500);
+        });
+
+        /* SCROLL REVEAL */
+        const observer = new IntersectionObserver(
+            entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("show");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            },
+            { threshold: 0.15 }
+        );
+
+        document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+    </script>
 </body>
 
 </html>
